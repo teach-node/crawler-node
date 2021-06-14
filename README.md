@@ -18,9 +18,6 @@ let : 宣告變數
 
 
 
-
-
-
 ## 安裝套件資源
 
 > npm i cheerio request -save
