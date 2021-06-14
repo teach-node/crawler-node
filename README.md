@@ -11,7 +11,13 @@
 - git pull: 把現在git上最新的程式抓下來
 
 ## NODE語法：
-console.log(“”) 印log
+console.log(“”) : 印log
+const : 引用套件
+> const cheerio = require('cheerio');
+let : 宣告變數
+
+
+
 
 
 
