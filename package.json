@@ -1,0 +1,19 @@
+{
+  "name": "crawler-node",
+  "version": "1.0.0",
+  "description": "抓資料！",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teach-node/crawler-node.git"
+  },
+  "author": "Tammy&Webber",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teach-node/crawler-node/issues"
+  },
+  "homepage": "https://github.com/teach-node/crawler-node#readme"
+}
