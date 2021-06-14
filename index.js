@@ -26,6 +26,28 @@ request({url: FOREIGN_OVERBOUGHT_RANKING_URL, encoding: null}, function (error, 
         stock[index].name = $(this).text();
     })
 
-    
+    $('table#oMainTable td.t3t1+td.t3n1').each(function(index, element){
+        stock[index] = stock[index] || {} ;
+        stock[index].endprice = $(this).text();
+    })
+
+    $('table#oMainTable td.t3t1+td.t3n1+td').each(function(index, element){
+        stock[index] = stock[index] || {} ;
+        // console.log('L36', index, $(this).text())
+        stock[index].upAndDown = $(this).text();
+    })
+
+    $('table#oMainTable td.t3t1+td.t3n1+td+td').each(function(index, element){
+        stock[index] = stock[index] || {} ;
+        stock[index].upAndDownRate = $(this).text();
+    })
+
+    $('table#oMainTable td.t3t1+td.t3n1+td+td+td').each(function(index, element){
+        stock[index] = stock[index] || {} ;
+        stock[index].count = $(this).text();
+    })
+
+
     console.log('L30',  stock)
+
 });
