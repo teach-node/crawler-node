@@ -17,7 +17,10 @@ request({url: FOREIGN_OVERBOUGHT_RANKING_URL, encoding: null}, function (error, 
     const $ = cheerio.load(bodyHtml);
 
     let dataTable = $('table#oMainTable').html();
-    console.log('L20', dataTable)
+    // console.log('L20', dataTable)
+
+    let date = $('table#oMainTable .t11').text()
+    console.log('L23', date)
 
     let stock = [];
 
