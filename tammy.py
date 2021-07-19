@@ -62,23 +62,36 @@ main = ['2611', '2613', '2617', '2637']
 # main = ['2611']
 sList = []
 
-for obj in mainList:
-    result = getStock(obj['sid'], cookie, cmkeyCode)
-    jsonFormat = demjson.decode(result.content)
-    # print(jsonFormat)
-    # {'Date': '20210719', 'OpenPr': 35.9, 'HighPr': 37.7, 'LowPr': 34.25, 'ClosePr': 34.55, 'PriceDifference': -0.8, 'MagnitudeOfPrice': -2.26, 'MA5': 33.1, 'MA20': 35.4, 'MA60': 23.92, 'DealQty': 27467, 'K9': 37.47, 'D9': 31.98, 'DIF': 2.733, 'MACD': 3.776, 'DIF_MACD': -1.043, 'RSI5': 49.4, 'RSI10': 52.92}
-    sList.append({
-        '名稱': obj['name'].replace("\n", "").replace("\r", "").replace(" ", ""),
-        '日期': jsonFormat[0]['Date'],
-        'K值': jsonFormat[0]['K9'],
-        'D值': jsonFormat[0]['D9'],
-        'DIF': jsonFormat[0]['DIF'],
-        'MACD': jsonFormat[0]['MACD'],
-        'DIF-MACD': jsonFormat[0]['DIF_MACD'],
-        '交易量': jsonFormat[0]['DealQty'],
-        '五日線': jsonFormat[0]['MA5'],
-    })
 
+# 建立 CSV 檔寫入器
+import csv
+with open('output.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
 
+    # 寫入一列資料
+    writer.writerow(['代號', '名稱', '日期', '收盤價', '五日線', '跌破五日', '成交量', 'K值', 'D值', 'KD值', 'DIF-MACD'])
+
+    for obj in mainList:
+        result = getStock(obj['sid'], cookie, cmkeyCode)
+        jsonFormat = demjson.decode(result.content)
+        # print(jsonFormat)
+        # {'Date': '20210719', 'OpenPr': 35.9, 'HighPr': 37.7, 'LowPr': 34.25, 'ClosePr': 34.55, 'PriceDifference': -0.8, 'MagnitudeOfPrice': -2.26, 'MA5': 33.1, 'MA20': 35.4, 'MA60': 23.92, 'DealQty': 27467, 'K9': 37.47, 'D9': 31.98, 'DIF': 2.733, 'MACD': 3.776, 'DIF_MACD': -1.043, 'RSI5': 49.4, 'RSI10': 52.92}
+        stockObj = {
+            '名稱': obj['name'].replace("\n", "").replace("\r", "").replace(" ", ""),
+            '日期': jsonFormat[0]['Date'],
+            '收盤價': jsonFormat[0]['ClosePr'],
+            '跌破五日': float(jsonFormat[0]['ClosePr']) - float(jsonFormat[0]['MA5']),
+            'K值': jsonFormat[0]['K9'],
+            'D值': jsonFormat[0]['D9'],
+            'KD值': float(jsonFormat[0]['K9']) - float(jsonFormat[0]['D9']),
+            'DIF': jsonFormat[0]['DIF'],
+            'MACD': jsonFormat[0]['MACD'],
+            'DIF-MACD': jsonFormat[0]['DIF_MACD'],
+            '成交量': jsonFormat[0]['DealQty'],
+            '五日線': jsonFormat[0]['MA5'],
+        }
+        if float(stockObj['K值']) < 40:
+            writer.writerow([obj['sid'], stockObj['名稱'], stockObj['日期'], stockObj['收盤價'], stockObj['五日線'], stockObj['跌破五日'], stockObj['成交量'], stockObj['K值'], stockObj['D值'], stockObj['KD值'], stockObj['DIF-MACD']])
+            sList.append(stockObj)
 
 print(sList)
