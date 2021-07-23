@@ -4,6 +4,7 @@ from lxml import html
 from bs4 import BeautifulSoup
 import re
 from fake_useragent import UserAgent
+import urllib.parse
 
 # 當日跌幅
 STOCK_DOWN_URL = 'https://fubon-ebrokerdj.fbs.com.tw/Z/ZG/ZG_AA.djhtm'
@@ -33,7 +34,7 @@ print(mainList)
 print(len(mainList))
 
 
-ENTER_POINT = 'https://www.cmoney.tw/finance/technicalanalysis.aspx?s=2330'
+ENTER_POINT = 'https://www.cmoney.tw/finance/technicalanalysis.aspx?s=2002'
 
 session_requests = requests.session()
 request_headers = {'user-agent': UserAgent().random}
@@ -46,7 +47,9 @@ ele = soup.find('a', title=re.compile('技術分析'))
 
 # sid = '00881'
 cookie = result.headers['Set-Cookie']
-cmkeyCode = ele['cmkey']
+cmkeyCode = urllib.parse.quote(ele['cmkey'])
+
+print('L51', cmkeyCode)
 
 def getStock(sid='', cookie='', cmkey=''):
     mainHeader = {
